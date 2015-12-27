@@ -1,0 +1,29 @@
+{
+  "name": "JonathanInRecovery",
+  "version": "0.0.0",
+  "authors": [
+    "Jonathan M <me@jonathaninrecovery.com>"
+  ],
+  "description": "Secular Recovery in Dallas",
+  "main": "README.md",
+  "keywords": [
+    "recovery",
+    "sobriety",
+    "smartrecovery",
+    "sober"
+  ],
+  "license": "Private",
+  "homepage": "www.jonathaninrecovery.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "justgage-bower": "justgage-toorshia#~1.1.0"
+  }
+}

@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css">
+{% block additional_stylesheets %}
+{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    {#<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>#}
+    {#<script>#}
+        {#var app = angular.module("battlerpg", ['leaflet-directive']);#}
+        {#app.controller("BattleRpg", [ "$scope", function($scope) {#}
+            {#// Nothing here!#}
+        {#}]);#}
+    {#</script>#}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.min.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-mousewheel/jquery.mousewheel.min.js') }}" ></script>
+
+    {% block additional_javascripts %}
+{% endblock %}
+{% endblock %}
