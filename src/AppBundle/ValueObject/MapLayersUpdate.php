@@ -22,7 +22,7 @@ class MapLayersUpdate
      * MapLayersUpdate constructor.
      * @param \AppBundle\Entity\MapLayer[] $mapLayers
      */
-    public function __construct(array $mapLayers)
+    public function __construct($mapLayers)
     {
         $this->mapLayers = $mapLayers;
     }

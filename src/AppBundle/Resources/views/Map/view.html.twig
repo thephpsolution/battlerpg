@@ -197,6 +197,10 @@
 
                     }
                 }
+
+                $('#update-form').append($('<input type="text" name="map_layers[mapLayers][MOUNTAIN][pointSets][][points]" />').val($('#map-points').val()));
+
+
                 this.reset();
                 this.print();
             };
@@ -404,5 +408,8 @@
             </div>
         </form>
 
-        {{ form(form, {'attr': {'style': 'visibility: hidden; display: none;'}}) }}
+        {{ form_start(form, {'attr': {'id': 'update-form'}}) }}
+        <input type="submit" name="submit" value="submit" />
+        {{ form_end(form) }}
+        {#, {'attr': {'style': 'visibility: hidden; display: none;'}}) }}#}
 {% endblock %}

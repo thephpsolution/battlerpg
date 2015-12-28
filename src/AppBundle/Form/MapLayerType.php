@@ -30,7 +30,8 @@ class MapLayerType extends AbstractType
                 'entry_type' => MapPointSetType::class,
                 'entry_options' => [
                     'required' => true
-                ]
+                ],
+                'allow_add' => true
             ])
             ->add('name')
             ->add('title')

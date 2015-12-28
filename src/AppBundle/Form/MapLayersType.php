@@ -31,7 +31,8 @@ class MapLayersType extends AbstractType
                 'entry_type' => MapLayerType::class,
                 'entry_options' => [
                     'required' => true
-                ]
+                ],
+                'allow_add' => true
             ])
         ;
     }
