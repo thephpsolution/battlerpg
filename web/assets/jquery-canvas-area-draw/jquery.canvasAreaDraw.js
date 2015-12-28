@@ -26,7 +26,7 @@
             points = [];
         }
 
-        $reset = $('<button type="button" class="btn"><i class="icon-trash"></i>Clear</button>');
+        $reset = $('<button class="editor-reset" type="button" class="btn"><i class="icon-trash"></i>Clear</button>');
         $canvas = $('<canvas>');
         ctx = $canvas[0].getContext('2d');
 
@@ -180,23 +180,6 @@ console.log('foo');
         $(document).find($canvas).on('contextmenu', rightclick);
         $(document).find($canvas).on('mouseup', stopdrag);
 
-window.setTimeout(function() {
-            var points2 = [
-                320, 320, 350, 350, 300, 300
-            ];
-            var context = ctx;
-            context.moveTo(20, 20);
-            context.lineTo(100, 20);
-            context.fillStyle = "#999";
-            context.beginPath();
-            context.arc(100,100,75,0,2*Math.PI);
-            context.fill();
-            context.fillStyle = "orange";
-            context.fillRect(20,20,50,50);
-            context.font = "24px Helvetica";
-            context.fillStyle = "#000";
-            context.fillText("Canvas", 50, 130);
-}, 4000);
         });
     };
 
