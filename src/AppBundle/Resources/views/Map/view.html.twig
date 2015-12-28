@@ -199,6 +199,23 @@
                     }
                 }
                 this.reset();
+                this.print();
+            };
+
+            this.print = function() {
+                var str = '';
+                console.log(this.data);
+                for (var i in this.data) {
+                    str += (i == 0 ? ': [' : '], ');
+                    for (var j = 0; j < this.data[i].length; j++) {
+                        str += (j == 0 ? '' : ', ') + '[';
+                        for (var k = 0; k < this.data[i][j].length; k++) {
+                            str += (k == 0 ? '' : ', ') + this.data[i][j][k];
+                        }
+                        str += ']';
+                    }
+                }
+                console.log(str);
             };
 
             this.drawLayers = function() {
@@ -362,10 +379,12 @@
                 <img src="{{ asset('bundles/app/' ~ image) }}"    alt="{{ key }}" title="{{ title }}"/>
             </input>
         </label>
+        <input type="hidden" name="data[{{ title }}]" id="data-{{ title }}-coordinates }}" value="" />
 {% endmacro %}
 
 {% block body %}
     <div id="editor-bar">
+        <form method="post">
     <div class="btn-group" data-toggle="buttons">
         {{ macros.button('mountain.png',    'M', 'Mountain') }}
         {{ macros.button('water.png',       'W', 'Water') }}
@@ -377,7 +396,6 @@
         <button class="editor-button editor-cancel btn btn-danger reset">Cancel</button>
     </div>
     </div>
-        <form>
             <div class="row">
                 <div class="span6">
       <textarea id="map-points" rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
@@ -386,4 +404,6 @@
                 </div>
             </div>
         </form>
+
+        {{ form(form) }}
 {% endblock %}
