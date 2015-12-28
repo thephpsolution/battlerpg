@@ -162,51 +162,82 @@
             position: absolute;
             display: none;
         }
+        #editor-bar {
+            height: 5em;
+            position: fixed;
+            top: 0;
+            left: 20vw;
+            /*width: 20vw;*/
+            padding: 1vh;
+            vertical-align: text-top;
+            margin: auto;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+
+            /*background: #6a3093; !* fallback for old browsers *!*/
+            /*background: -webkit-linear-gradient(to top, #6a3093 , #a044ff); !* Chrome 10-25, Safari 5.1-6 *!*/
+            /*background: linear-gradient(to top, #6a3093 , #a044ff); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+
+        }
+
+        .editor-button {
+            font-size: 2em;
+            /*width: 3.2em;*/
+            height: 5vh;
+            /*background: rgba(250, 250, 250, 0.7);*/
+            /*background-image: url(...);*/
+            /*background-repeat: no-repeat;*/
+            /*background-position: <left|right>;*/
+            /*padding-<left|right>: <width of image>px;*/
+        }
+        .editor-button > img {
+            height: 4vh;
+            /*width: 3.2em;*/
+            margin-left: -0.2em;
+            margin-topt: -0.8em;
+        }
 
     </style>
     <link href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
+{% import _self as macros %}
+
+{% macro button(image, key, title) %}
+        <label class="editor-button btn btn-primary active">
+            <input type="radio" class="editor-button btn btn-primary" name="mode" value="{{ title }}">
+                <img src="{{ asset('bundles/app/' ~ image) }}"    alt="{{ key }}" title="{{ title }}"/>
+            </input>
+        </label>
+{% endmacro %}
+
 {% block body %}
-    <div id="main" class="container">
-        <h1>Image Maps Canvas Drawing</h1>
+    <div id="editor-bar">
+    <div class="btn-group" data-toggle="buttons">
+        {{ macros.button('mountain.png',    'M', 'Mountain') }}
+        {{ macros.button('water.png',       'W', 'Water') }}
+        {{ macros.button('boundary.png',    'B', 'Boundary') }}
+        {{ macros.button('trees.png',       'T', 'Tree') }}
+        {{ macros.button('path.png',        'P', 'Path') }}
+        {{ macros.button('field.png',       'F', 'Field') }}
+        {#<button class="editor-button btn btn-primary"><img src="{{ asset('bundles/app/water.png') }}"       alt="W" title="Water"/></button>#}
+        {#<button class="editor-button btn btn-primary"><img src="{{ asset('bundles/app/boundary.png') }}"    alt="B" title="Boundary"/></button>#}
+        {#<button class="editor-button btn btn-primary"><img src="{{ asset('bundles/app/trees.png') }}"       alt="T" title="Trees"/></button>#}
+        {#<button class="editor-button btn btn-primary"><img src="{{ asset('bundles/app/path.png') }}"        alt="P" title="Path"/></button>#}
+        {#<button class="editor-button btn btn-primary"><img src="{{ asset('bundles/app/field.png') }}"     alt="R" title="Terrain"/></button>#}
+        <button class="editor-button btn btn-success">Finish</button>
+        <button class="editor-button btn btn-danger reset">Cancel</button>
+    </div>
+    </div>
         <form>
             <div class="row">
                 <div class="span6">
-                    <h2> Image 1 </h2>
-      <textarea rows=3 name="coords1" class="canvas-area input-xxlarge" disabled
+      <textarea rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
                 placeholder="Shape Coordinates"
-                data-image-url="{{ asset('bundles/app/map.jpg') }}"></textarea>
+                data-image-url="{{ asset('bundles/app/map.jpg') }}">549,194,549,316,563,339,517,372,533,386,566,373,585,370,597,379,637,372,665,365,669,376,717,381,790,399,811,382,807,371,698,329,680,282,663,278,645,292,626,271,604,263,621,247,606,232,597,234,596,198,582,183,568,187</textarea>
                 </div>
             </div>
         </form>
-    </div>
-
-{#<div style="float: right;">#}
-    {#<div class="btn-group" data-toggle="buttons">#}
-        {#<label class="btn btn-primary">#}
-            {#<input type="radio" name="options" id="mark_mountains" autocomplete="off" /> Mark Mountains#}
-        {#</label>#}
-        {#<label class="btn btn-primary">#}
-            {#<input type="radio" name="options" id="mark_trees" autocomplete="off"> Mark Trees#}
-        {#</label>#}
-        {#<label class="btn btn-primary">#}
-            {#<input type="radio" name="options" id="mark_water" autocomplete="off"> Mark Water#}
-        {#</label>#}
-    {#</div>#}
-{#</div>#}
-
-{#&#123;&#35;<div class="toolbar">&#35;&#125;#}
-    {#&#123;&#35;<span id="status"></span>|Show me:&#35;&#125;#}
-    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">big circle</a>,&#35;&#125;#}
-    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">middle circle</a>,&#35;&#125;#}
-    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">small circle</a>,&#35;&#125;#}
-    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">rectangle</a>&#35;&#125;#}
-{#&#123;&#35;</div>&#35;&#125;#}
-
-{#<div class="wrapper">#}
-    {#<div id="viewer1" class="viewer"></div>#}
-{#</div>#}
-
-{#<div id="pointer"></div>#}
 {% endblock %}

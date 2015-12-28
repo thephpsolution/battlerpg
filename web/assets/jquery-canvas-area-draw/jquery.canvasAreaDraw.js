@@ -41,7 +41,7 @@
         $canvas.css({background: 'url('+image.src+')'});
 
         $(document).ready( function() {
-            $(input).after('<br>', $canvas, '<br>', $reset);
+            $(input).after( $canvas, $reset);
         });
 
         reset = function() {
@@ -180,11 +180,29 @@ console.log('foo');
         $(document).find($canvas).on('contextmenu', rightclick);
         $(document).find($canvas).on('mouseup', stopdrag);
 
+window.setTimeout(function() {
+            var points2 = [
+                320, 320, 350, 350, 300, 300
+            ];
+            var context = ctx;
+            context.moveTo(20, 20);
+            context.lineTo(100, 20);
+            context.fillStyle = "#999";
+            context.beginPath();
+            context.arc(100,100,75,0,2*Math.PI);
+            context.fill();
+            context.fillStyle = "orange";
+            context.fillRect(20,20,50,50);
+            context.font = "24px Helvetica";
+            context.fillStyle = "#000";
+            context.fillText("Canvas", 50, 130);
+}, 4000);
         });
     };
 
     $(document).ready(function() {
         $('.canvas-area[data-image-url]').canvasAreaDraw();
+
     });
 
     var dotLineLength = function(x, y, x0, y0, x1, y1, o) {
