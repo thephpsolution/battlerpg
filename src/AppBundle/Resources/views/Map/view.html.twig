@@ -172,14 +172,13 @@
             this.context = null;
             this.dirty = false;
             this.data = {
-                'Mountain': [[
-                    549,194,549,316,563,339,517,372,533,386,566,373,585,370,597,379,637,372,665,365,669,376,717,381,790,399,811,382,807,371,698,329,680,282,663,278,645,292,626,271,604,263,621,247,606,232,597,234,596,198,582,183,568,187
-                ]],
-                'Tree': [],
-                'Water': [],
-                'Boundary': [],
-                'Path': [],
-                'Field': []
+            {% for x in update.mapLayers %}
+                '{{ x.getTitle() }}': [
+                    {% for y in x.getPointSets() %}
+                        [{{ y.points|join(',') }}],
+                    {% endfor %}
+                ],
+            {% endfor %}
             };
 
             this.reset = function() {
@@ -405,5 +404,5 @@
             </div>
         </form>
 
-        {{ form(form) }}
+        {{ form(form, {'attr': {'style': 'visibility: hidden; display: none;'}}) }}
 {% endblock %}
