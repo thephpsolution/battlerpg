@@ -2,10 +2,12 @@
 {% block additional_javascripts %}
 
     <script type="text/javascript" src="{{ asset('assets/vendor/iviewer/jquery.iviewer.min.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('assets/jquery-canvas-area-draw/jquery.canvasAreaDraw.js') }}" ></script>
+
     <script type="text/javascript">
         jQuery(function($){
 
-            var viewer;
+            var viewer, app;
 
             function isInCircle(x, y) {
                 var relative_x = x - this.x;
@@ -63,6 +65,7 @@
                 zoom: 125,
 
                 onClick: function(ev, coords) {
+                    console.log('Mark mountain at ' + coords.x + ", " + coords.y);
                     var object = whereIam(coords.x, coords.y);
 
                     if (object)
@@ -98,6 +101,14 @@
                 initCallback: function(ev) {
                     this.container.context.iviewer = this;
                 }
+            });
+        });
+
+        var app = {};
+        $(document).ready(function() {
+
+            $('#mark_mountains').change(function() {
+                app.mode = 'mark_mountains';
             });
         });
     </script>
@@ -153,20 +164,49 @@
         }
 
     </style>
+    <link href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block body %}
-<div class="toolbar">
-    <span id="status"></span>|Show me:
-    <a href="#" onclick="showMe(event, this)">big circle</a>,
-    <a href="#" onclick="showMe(event, this)">middle circle</a>,
-    <a href="#" onclick="showMe(event, this)">small circle</a>,
-    <a href="#" onclick="showMe(event, this)">rectangle</a>
-</div>
+    <div id="main" class="container">
+        <h1>Image Maps Canvas Drawing</h1>
+        <form>
+            <div class="row">
+                <div class="span6">
+                    <h2> Image 1 </h2>
+      <textarea rows=3 name="coords1" class="canvas-area input-xxlarge" disabled
+                placeholder="Shape Coordinates"
+                data-image-url="{{ asset('bundles/app/map.jpg') }}"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
 
-<div class="wrapper">
-    <div id="viewer1" class="viewer"></div>
-</div>
+{#<div style="float: right;">#}
+    {#<div class="btn-group" data-toggle="buttons">#}
+        {#<label class="btn btn-primary">#}
+            {#<input type="radio" name="options" id="mark_mountains" autocomplete="off" /> Mark Mountains#}
+        {#</label>#}
+        {#<label class="btn btn-primary">#}
+            {#<input type="radio" name="options" id="mark_trees" autocomplete="off"> Mark Trees#}
+        {#</label>#}
+        {#<label class="btn btn-primary">#}
+            {#<input type="radio" name="options" id="mark_water" autocomplete="off"> Mark Water#}
+        {#</label>#}
+    {#</div>#}
+{#</div>#}
 
-<div id="pointer"></div>
+{#&#123;&#35;<div class="toolbar">&#35;&#125;#}
+    {#&#123;&#35;<span id="status"></span>|Show me:&#35;&#125;#}
+    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">big circle</a>,&#35;&#125;#}
+    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">middle circle</a>,&#35;&#125;#}
+    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">small circle</a>,&#35;&#125;#}
+    {#&#123;&#35;<a href="#" onclick="showMe(event, this)">rectangle</a>&#35;&#125;#}
+{#&#123;&#35;</div>&#35;&#125;#}
+
+{#<div class="wrapper">#}
+    {#<div id="viewer1" class="viewer"></div>#}
+{#</div>#}
+
+{#<div id="pointer"></div>#}
 {% endblock %}
