@@ -43,19 +43,22 @@ html, body {
     position: absolute;
     display: none;
 }
+#editor-bar, #sidebar {
+    padding: 1vh;
+    vertical-align: text-top;
+    color: white;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.4);
+}
+
 #editor-bar {
     height: 5em;
     position: fixed;
     top: 0;
     left: 20vw;
-    /*width: 20vw;*/
-    padding: 1vh;
-    vertical-align: text-top;
     margin: auto;
-    color: white;
-    font-weight: bold;
     text-align: center;
-    background: rgba(0, 0, 0, 0.4);
+    /*width: 20vw;*/
 
     /*background: #6a3093; !* fallback for old browsers *!*/
     /*background: -webkit-linear-gradient(to top, #6a3093 , #a044ff); !* Chrome 10-25, Safari 5.1-6 *!*/
@@ -78,4 +81,8 @@ html, body {
     /*width: 3.2em;*/
     margin-left: -0.2em;
     margin-topt: -0.8em;
+}
+
+.editor-bar form input {
+    height: 3em;
 }

@@ -17,6 +17,19 @@
             }
             editor.setData(data);
         };
+
+        $(document).ready(function() {
+            $('#button-Login').click(function() {
+                console.log('clicked');
+                console.log($.post(
+                        '{{ path('game_login') }}',
+                        $(this).closest('form').serialize(),
+                        function(data, textStatus, jqXHR) {
+                            console.log(data);
+                        }
+                ));
+            })
+        });
     </script>
 {% endblock %}
 
@@ -36,40 +49,134 @@
 
 {% import _self as macros %}
 
-{% macro button(image, key, title) %}
-        <label class="editor-button btn btn-primary active">
-            <input type="radio" class="editor-button editor-mode btn btn-primary" name="mode" value="{{ title }}">
-                <img src="{{ asset('bundles/app/' ~ image) }}"    alt="{{ key }}" title="{{ title }}"/>
-            </input>
-        </label>
-        <input type="hidden" name="data[{{ title }}]" id="data-{{ title }}-coordinates }}" value="" />
+{% macro button(image, key, title, fa, style) %}
+    <label class="editor-button btn btn-primary active" style="{{ style is empty ? '' : style }}">
+        <input id="button-{{ title }}" type="radio" class="editor-button editor-mode btn btn-primary" name="mode" value="{{ title }}">
+        {% if fa is not empty %}
+            <i class="fa fa-{{ image }}"></i>
+        {% else %}
+            <img src="{{ asset('bundles/app/' ~ image) }}"    alt="{{ key }}" title="{{ title }}"/>
+        {% endif %}
+        </input>
+    </label>
+    <input type="hidden" name="data[{{ title }}]" id="data-{{ title }}-coordinates }}" value="" />
+{% endmacro %}
+
+{% macro stdbutton(image, key, title, fa, style) %}
+    <label class="editor-button btn btn-primary active" style="{{ style is empty ? '' : style }}">
+        <button id="button-{{ title }}" type="button" class="editor-button editor-mode btn btn-primary">
+        {% if fa is not empty %}
+            <i class="fa fa-{{ image }}"></i>
+        {% else %}
+            <img src="{{ asset('bundles/app/' ~ image) }}"    alt="{{ key }}" title="{{ title }}"/>
+        {% endif %}
+        </button>
+    </label>
+    <input type="hidden" name="data[{{ title }}]" id="data-{{ title }}-coordinates }}" value="" />
 {% endmacro %}
 
 {% block body %}
-    <div id="editor-bar">
-        <form method="post">
-    <div class="btn-group" data-toggle="buttons">
-        {{ macros.button('mountain.png',    'M', 'Mountain') }}
-        {{ macros.button('water.png',       'W', 'Water') }}
-        {{ macros.button('boundary.png',    'B', 'Boundary') }}
-        {{ macros.button('trees.png',       'T', 'Tree') }}
-        {{ macros.button('path.png',        'P', 'Path') }}
-        {{ macros.button('field.png',       'F', 'Field') }}
-        <button class="editor-button editor-finish btn btn-success">Finish</button>
-        <button class="editor-button editor-cancel btn btn-danger reset">Cancel</button>
-    </div>
-    </div>
-            <div class="row">
-                <div class="span6">
-      <textarea id="map-points" rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
+    <form method="post">
+        <div id="editor-bar">
+
+            {% if user is empty %}
+            <div class="btn-group" data-toggle="buttons" id="guest-bar">
+
+                <form action="{{ path("fos_user_security_check") }}" method="post">
+                    <div style="float: left;">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+                        <label for="username"></label>
+                        <input style="height: 3em;" placeholder="Username" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+
+                        <label for="password"></label>
+                        <input style="height: 3em;" placeholder="Password" type="password" id="password" name="_password" required="required" />
+
+                        {#<input type="checkbox" id="remember_me" name="_remember_me" value="on" />#}
+                        {#<label for="remember_me">Remember Me</label>#}
+                    </div>
+                    <span style="clear:both;"></span>
+
+                    {{ macros.stdbutton('user',    'L', 'Login', true, 'float: left;') }}
+                </form>
+            </div>
+            {% elseif user.hasRole('ROLE_ADMIN') %}
+            <div class="btn-group" data-toggle="buttons" id="mapeditor-bar">
+                {{ macros.button('mountain.png',    'M', 'Mountain') }}
+                {{ macros.button('water.png',       'W', 'Water') }}
+                {{ macros.button('boundary.png',    'B', 'Boundary') }}
+                {{ macros.button('trees.png',       'T', 'Tree') }}
+                {{ macros.button('path.png',        'P', 'Path') }}
+                {{ macros.button('field.png',       'F', 'Field') }}
+                <button class="editor-button editor-finish btn btn-success">Finish</button>
+                <button class="editor-button editor-cancel btn btn-danger reset">Cancel</button>
+            </div>
+            {% else %}
+            <div class="btn-group" data-toggle="buttons" id="admin-bar">
+                Welcome, {{ user.roles|join(',') }}
+            </div>
+            {% endif %}
+        </div>
+        <style type="text/css">
+            #sidebar {
+                position: fixed;
+                top: 9vh;
+                right: 1vh;
+                width: 40vh;
+            }
+            #editor-header {
+                width: 100%;
+                border: 1px solid darkgoldenrod;
+                background-image: linear-gradient(to bottom,darkgoldenrod 0,#DAA520 100%);
+                color: darkgreen;
+                font-weight: bold;
+                font-size: 2em;
+                background-repeat: repeat-x;
+            }
+            .btn-sidebar > img {
+                height: 8em;
+            }
+
+            ul.editor-buttons {
+                list-style: none;
+
+            }
+            ul.editor-buttons li {
+                display: inline-block;
+            }
+        </style>
+        <div id="sidebar">
+            <button class="btn" id="editor-header" class="header-button">Editor</button>
+            <div>
+                <ul style="list-style: none;">
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="bundles/app/map.png" alt="Map Editor" title="Map Editor" /></a></li>
+                </ul>
+            </div>
+            <button class="btn" id="editor-header" class="header-button">Build</button>
+            <div>
+                <ul class="editor-buttons">
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum1.gif" alt="Build a City" title="Build a City" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum2.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum3.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum4.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum5.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum6.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum7.gif" alt="hum" title="hum" /></a></li>
+                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="/bundles/app/hum8.gif" alt="hum" title="hum" /></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span6">
+              <textarea id="map-points" rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
                 placeholder="Shape Coordinates"
                 data-image-url="{{ asset('bundles/app/map.jpg') }}">549,194,549,316,563,339,517,372,533,386,566,373,585,370,597,379,637,372,665,365,669,376,717,381,790,399,811,382,807,371,698,329,680,282,663,278,645,292,626,271,604,263,621,247,606,232,597,234,596,198,582,183,568,187</textarea>
-                </div>
             </div>
-        </form>
+        </div>
+    </form>
 
-        {{ form_start(form, {'attr': {'id': 'update-form'}}) }}
-        <input type="submit" name="submit" value="submit" />
-        {{ form_end(form) }}
-        {#, {'attr': {'style': 'visibility: hidden; display: none;'}}) }}#}
+    {{ form_start(form, {'attr': {'id': 'update-form', 'style': 'display: none;'}}) }}
+    <input type="submit" name="submit" value="submit" />
+    {{ form_end(form) }}
+    {#, {'attr': {'style': 'visibility: hidden; display: none;'}}) }}#}
 {% endblock %}
