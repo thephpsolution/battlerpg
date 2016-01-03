@@ -1,9 +1,9 @@
 /app/config/parameters.yml
-/bin/
+/xbin/
 /build/
 /composer.phar
 /vendor/
-/web/bundles/
+/xweb/bundles/
 /var/
 !var/cache/.gitkeep
 !var/logs/.gitkeep

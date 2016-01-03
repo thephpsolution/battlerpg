@@ -33,8 +33,8 @@ class SecurityController extends Controller
 
         return $response = new JsonResponse([
             'user' => (object)[
-                'name' => $user->getUsername(),
-                'admin' => $user->hasRole('ROLE_ADMIN'),
+                'name' => $user === 'anon.' ? 'Guest' : $user->getUsername(),
+                'admin' => $user === 'anon.' ? false : $user->hasRole('ROLE_ADMIN'),
             ]
         ]);
     }

@@ -39,6 +39,10 @@ class MapController extends Controller
         $session = $request->getSession();
         /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
 
+        if (!$this->container->get('security.context')->getToken()->getUser() || $this->container->get('security.context')->getToken()->getUser() === "anon.") {
+            return $this->redirect('/login');
+        }
+
         // get the error if any (works with forward and redirect -- see below)
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
