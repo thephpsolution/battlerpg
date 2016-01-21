@@ -54,8 +54,8 @@ jQuery(function($){
 
     window.showMe = showMe;
 
-    viewer = $("#viewer1").iviewer({
-        src: "/bundles/app/map.jpg",
+    viewer = $("#viewer").iviewer({
+        //src: "/bundles/app/map.jpg",
         zoom: 125,
 
         onClick: function(ev, coords) {
@@ -228,4 +228,5 @@ var editor = new function() {
             }
         }
     };
+
 };
