@@ -166,13 +166,13 @@
                 </ul>
             </div>
         </div>
-        <div class="row">
-            <div class="span6">
               <textarea id="map-points" rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
                 placeholder="Shape Coordinates"
                 data-image-url="{{ asset('bundles/app/map.jpg') }}">549,194,549,316,563,339,517,372,533,386,566,373,585,370,597,379,637,372,665,365,669,376,717,381,790,399,811,382,807,371,698,329,680,282,663,278,645,292,626,271,604,263,621,247,606,232,597,234,596,198,582,183,568,187</textarea>
-            </div>
+        <div id="viewer" class="viewer iviewer_cursor" style="border: 1px solid black; width: 100vw; height: 100vh; position: absolute; top: 0;">
+            {#<img src="{{ asset('bundles/app/map.jpg') }}" style="border: 1px solid black; position: absolute; top: 0; left: 0; max-width: none; width: 150vw; height: 50vh;">#}
         </div>
+
     </form>
 
     {{ form_start(form, {'attr': {'id': 'update-form', 'style': 'display: none;'}}) }}
