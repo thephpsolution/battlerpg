@@ -1,22 +1,48 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
+{% block additional_javascripts %}
+
+<script type="text/javascript" src="{{ asset('assets/vendor/iviewer/jquery.iviewer.min.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('assets/jquery-canvas-area-draw/jquery.canvasAreaDraw.js') }}" ></script>
+{% endblock %}
+
 {% block fos_user_content %}
 {% if error %}
     <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
 {% endif %}
+<div class="row">
+    <div class="span6">
+      <textarea id="map-points" rows=3 style="display: none; width: 0; height: 0; padding: 0; border: 0;" name="coords1" class="canvas-area input-xxlarge" disabled
+                placeholder="Shape Coordinates"
+                data-image-url="{{ asset('bundles/app/map.jpg') }}">549,194,549,316,563,339,517,372,533,386,566,373,585,370,597,379,637,372,665,365,669,376,717,381,790,399,811,382,807,371,698,329,680,282,663,278,645,292,626,271,604,263,621,247,606,232,597,234,596,198,582,183,568,187</textarea>
+    </div>
+</div>
+    <div id="login-modal" class="modal fade in" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ path("fos_user_security_check") }}" method="post">
+                <div class="modal-header">
+                    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                        <label for="username"></label>
+                        <input style="height: 3em;" placeholder="Username" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
 
-    <label for="username"></label>
-    <input style="height: 3em;" placeholder="Udsername" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                        <label for="password"></label>
+                        <input style="height: 3em;" placeholder="Password" type="password" id="password" name="_password" required="required" />
 
-    <label for="password"></label>
-    <input style="height: 3em;" placeholder="Password" type="password" id="password" name="_password" required="required" />
-
-    {#<input type="checkbox" id="remember_me" name="_remember_me" value="on" />#}
-    {#<label for="remember_me">Remember Me</label>#}
-
-    <input type="submit" id="_submit" name="_submit" value="Login" />
-</form>
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                        <label for="remember_me">Remember Me</label>
+                </div>
+                <div class="modal-footer">
+                    {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                    <button type="submit" class="btn btn-primary" id="_submit" name="_submit">Login</button>
+                </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 {% endblock fos_user_content %}

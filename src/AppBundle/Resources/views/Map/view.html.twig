@@ -31,6 +31,51 @@
             })
         });
     </script>
+
+    <script type="text/javascript">
+        var MapEditor = function() {
+            this.mode = null;
+            this.modes = {
+                DEFAULT: 0,
+                MAP_EDITOR: 1
+            };
+
+            this.enableMode = function(mode, btn) {
+                if (!this.modes.hasOwnProperty(mode)) {
+                    this.triggerError('Unknown Mode', 'Invalid mode ('+mode+') selected.');
+                    return;
+                } else if ($(btn).hasClass('btn-success')) {
+                    this.reset();
+                    return;
+                }
+                $('#sidebar li > a[data-mode="'+mode+'"]').removeClass('btn-primary').addClass('btn-success');
+                this.listeners[mode]();
+            };
+
+            this.triggerError = function(title, body) {
+                var modal = $('#error-modal');
+                modal.find('#error-title').html(title);
+                modal.find('.modal-body').html(body);
+                modal.modal('show');
+            };
+
+            this.reset = function() {
+                $('#mapeditor-bar').hide();
+                $('#sidebar li > a[data-mode]').removeClass('btn-success').addClass('btn-primary');
+            };
+
+            this.listeners = {
+                MAP_EDITOR: function() {
+                    $('#mapeditor-bar').show();
+                }
+            };
+        };
+
+        var mapper = new MapEditor();
+        $('#sidebar li > .btn').click(function() {
+            mapper.enableMode($(this).data('mode'), this);
+        });
+    </script>
 {% endblock %}
 
 {% block additional_stylesheets %}
@@ -50,8 +95,8 @@
 {% import _self as macros %}
 
 {% macro button(image, key, title, fa, style) %}
-    <label class="editor-button btn btn-primary active" style="{{ style is empty ? '' : style }}">
-        <input id="button-{{ title }}" type="radio" class="editor-button editor-mode btn btn-primary" name="mode" value="{{ title }}">
+    <label id="button-{{ title }}" class="editor-button btn btn-primary" style="{{ style is empty ? '' : style }}">
+        <input type="radio" class="editor-button editor-mode btn btn-primary" name="mode" value="{{ title }}">
         {% if fa is not empty %}
             <i class="fa fa-{{ image }}"></i>
         {% else %}
@@ -63,8 +108,8 @@
 {% endmacro %}
 
 {% macro stdbutton(image, key, title, fa, style) %}
-    <label class="editor-button btn btn-primary active" style="{{ style is empty ? '' : style }}">
-        <button id="button-{{ title }}" type="button" class="editor-button editor-mode btn btn-primary">
+    <label id="button-{{ title }}" class="editor-button btn btn-primary" style="{{ style is empty ? '' : style }}">
+        <button type="button" class="editor-button editor-mode btn btn-primary">
         {% if fa is not empty %}
             <i class="fa fa-{{ image }}"></i>
         {% else %}
@@ -101,7 +146,7 @@
                 </form>
             </div>
             {% elseif user.hasRole('ROLE_ADMIN') %}
-            <div class="btn-group" data-toggle="buttons" id="mapeditor-bar">
+            <div class="btn-group" data-toggle="buttons" id="mapeditor-bar" style="display:none;">
                 {{ macros.button('mountain.png',    'M', 'Mountain') }}
                 {{ macros.button('water.png',       'W', 'Water') }}
                 {{ macros.button('boundary.png',    'B', 'Boundary') }}
@@ -149,7 +194,7 @@
             <button class="btn" id="editor-header" class="header-button">Editor</button>
             <div>
                 <ul style="list-style: none;">
-                    <li><a href="#" class="btn btn-primary btn-sidebar"><img src="bundles/app/map.png" alt="Map Editor" title="Map Editor" /></a></li>
+                    <li><a data-mode="MAP_EDITOR" href="#" class="btn btn-primary btn-sidebar"><img src="bundles/app/map.png" alt="Map Editor" title="Map Editor" /></a></li>
                 </ul>
             </div>
             <button class="btn" id="editor-header" class="header-button">Build</button>

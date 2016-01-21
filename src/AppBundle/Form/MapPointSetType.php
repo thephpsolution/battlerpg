@@ -12,6 +12,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\MapLayer;
 use AppBundle\Entity\MapPointSet;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,6 +29,17 @@ class MapPointSetType extends AbstractType
         $builder
             ->add('points', 'text')
             ->add('title')
+        ;
+
+        $builder->get('points')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($original) {
+                    return !$original ? '' : implode(',', $original);
+                },
+                function ($submitted) {
+                    return !$submitted ? [] : explode(',', $submitted);
+                }
+            ))
         ;
     }
 
