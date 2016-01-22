@@ -55,7 +55,7 @@ jQuery(function($){
     window.showMe = showMe;
 
     viewer = $("#viewer").iviewer({
-        //src: "/bundles/app/map.jpg",
+        src: "/bundles/app/map.jpg",
         zoom: 125,
 
         onClick: function(ev, coords) {
